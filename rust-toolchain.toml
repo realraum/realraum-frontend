@@ -1,0 +1,4 @@
+# This project uses the nightly channel of Rust, as recommended by the Leptos documentation.
+
+[toolchain]
+channel = "nightly"

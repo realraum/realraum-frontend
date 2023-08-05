@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Noto color emoji */
+@font-face {
+  font-family: "Noto Color Emoji";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/vendor/fonts/nce/nce.woff2") format("woff2");
+}
+
+.r3ui-btn-grp > button {
+  @apply h-full w-fit py-1 px-2;
+}
+
+.r3ui-btn-grp > button:not(:first-child) {
+  @apply border-l dark:border-gray-700 border-gray-400;
+}
+
+.r3ui-card-grid {
+  @apply grid grid-cols-2 gap-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7;
+}

@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "rust-lang.rust-analyzer",
+        "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode",
+        "gruntfuggly.todo-tree",
+        "tamasfe.even-better-toml",
+        "serayuzgur.crates"
+    ]
+}
