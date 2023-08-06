@@ -1,6 +1,6 @@
 mod app;
 // mod components;
-// mod core;
+mod core;
 
 use leptos::*;
 
