@@ -1,7 +1,10 @@
+mod sound_button;
+
 use leptos::{ev::close, *};
 use leptos_router::*;
 
-use crate::core::get_sounds;
+use crate::app::sound_button::SoundButton;
+use crate::core::{get_sounds, get_sounds_strings, parse_sounds, Sound};
 
 async fn load_data() -> i32 {
     42
@@ -11,7 +14,6 @@ async fn load_data() -> i32 {
 pub fn App(cx: Scope) -> impl IntoView {
     let version_info = env!("CARGO_PKG_VERSION");
 
-    // this count is our synchronous, local state
     let (count, set_count) = create_signal(cx, 0);
 
     // create_resource takes two arguments after its scope
@@ -22,14 +24,19 @@ pub fn App(cx: Scope) -> impl IntoView {
         // the second is the loader
         // it takes the source signal's value as its argument
         // and does some async work
-        |value| async move { get_sounds().await },
+        |value| async move {
+            log::info!("loading data...");
+
+            let res = get_sounds_strings().await;
+
+            log::info!("res: {:?}", res);
+
+            let sounds = parse_sounds(&res);
+
+            sounds
+        },
     );
     // whenever the source signal changes, the loader reloads
-
-    // you can also create resources that only load once
-    // just return the unit type () from the source signal
-    // that doesn't depend on anything: we just load it once
-    let stable = create_resource(cx, || (), |_| async move { get_sounds().await });
 
     // we can access the resource values with .read()
     // this will reactively return None before the Future has resolved
@@ -37,9 +44,8 @@ pub fn App(cx: Scope) -> impl IntoView {
     let async_result = move || {
         async_data
             .read(cx)
-            .map(|value| format!("Server returned {value:?}"))
             // This loading state will only show before the first load
-            .unwrap_or_else(|| "Loading...".into())
+            .unwrap_or_else(|| vec![])
     };
 
     // the resource's loading() method gives us a
@@ -47,26 +53,45 @@ pub fn App(cx: Scope) -> impl IntoView {
     let loading = async_data.loading();
     let is_loading = move || if loading() { "Loading..." } else { "Idle." };
 
+    let test_sound = Sound {
+        name: "test_sound".to_string(),
+        url: "/test_sound.ogg".to_string(),
+    };
+
     view! { cx,
         <div class="h-fit min-h-screen bg-slate-600 text-white">
             <div id="topbar" class="sticky top-0 left-0 bg-slate-500 p-1">
-                "Realraum UI v" {env!("CARGO_PKG_VERSION")}
+                "Realraum UI v"
+                {env!("CARGO_PKG_VERSION")}
             </div>
 
-
-            <button
-            on:click=move |_| {
+            <button on:click=move |_| {
                 set_count.update(|n| *n += 1);
-            }
-        >
-            "Click me"
-        </button>
-        <p>
-            <code>"async_value"</code>": "
-            {async_result}
-            <br/>
-            {is_loading}
-        </p>
+            }>
+                "Click me"
+            </button>
+
+        //     <p>
+        //         <code>"async_value"</code>
+        //         ": "
+        //         {async_result}
+        //         <br/>
+        //         {is_loading}
+
+        {
+            async_result().into_iter()
+            .map(|n| view! { cx,
+                <SoundButton sound=n/>
+                })
+            .collect_view(cx)
+        }
+
+        {
+            dbg!(async_result());
+        }
+
+
+        //     </p>
 
         </div>
     }
