@@ -4,21 +4,27 @@ use crate::core::{play_sound, Sound};
 
 #[component]
 pub fn SoundButton(cx: Scope, sound: Sound) -> impl IntoView {
-    // let play = async move |_| {
-    //     let _ = play_sound(&url).unwrap();
-    // };
+    let play_action = create_action(cx, |snd: &Sound| {
+        let url = snd.url.clone();
+        async move { play_sound(url).await.unwrap() }
+    });
 
-    let Sound { name, url } = sound;
+    let sound_2 = sound.clone();
+    // let play = |_| play_action.dispatch(&sound_2);
+
+    let Sound { name, url } = sound.clone();
 
     view! { cx,
-        // <button
-        //     class="bg-slate-500 hover:bg-slate-400 text-white font-bold py-2 px-4 rounded"
-        //     on:click=play
-        // >
-        //     {name}
-        // </button>
-        <div class="bg-slate-500 hover:bg-slate-400 text-white font-bold py-2 px-4 rounded">
+        <button
+            class="bg-slate-500 hover:bg-slate-400 text-white font-bold py-2 px-4 rounded"
+            on:submit=move |ev| {
+                play_action.dispatch(sound_2.clone());
+            }
+            >
             {name}", " {url}
-        </div>
+        </button>
+        // <div class="bg-slate-500 hover:bg-slate-400 text-white font-bold py-2 px-4 rounded">
+        //     {name}", " {url}
+        // </div>
     }
 }

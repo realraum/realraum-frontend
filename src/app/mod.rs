@@ -12,6 +12,11 @@ async fn load_data() -> i32 {
 
 #[component]
 pub fn App(cx: Scope) -> impl IntoView {
+    let test_sound = Sound {
+        name: "test_sound".to_string(),
+        url: "/test_sound.ogg".to_string(),
+    };
+
     let version_info = env!("CARGO_PKG_VERSION");
 
     let (count, set_count) = create_signal(cx, 0);
@@ -29,7 +34,7 @@ pub fn App(cx: Scope) -> impl IntoView {
 
             let res = get_sounds_strings().await;
 
-            log::info!("res: {:?}", res);
+            // log::info!("res: {:?}", res);
 
             let sounds = parse_sounds(&res);
 
@@ -45,18 +50,13 @@ pub fn App(cx: Scope) -> impl IntoView {
         async_data
             .read(cx)
             // This loading state will only show before the first load
-            .unwrap_or_else(|| vec![])
+            .unwrap_or_else(|| vec![test_sound.clone()])
     };
 
     // the resource's loading() method gives us a
     // signal to indicate whether it's currently loading
     let loading = async_data.loading();
     let is_loading = move || if loading() { "Loading..." } else { "Idle." };
-
-    let test_sound = Sound {
-        name: "test_sound".to_string(),
-        url: "/test_sound.ogg".to_string(),
-    };
 
     view! { cx,
         <div class="h-fit min-h-screen bg-slate-600 text-white">
@@ -81,15 +81,26 @@ pub fn App(cx: Scope) -> impl IntoView {
         {
             async_result().into_iter()
             .map(|n| view! { cx,
+                {"Button goes brrr "}
                 <SoundButton sound=n/>
                 })
             .collect_view(cx)
         }
 
-        {
-            dbg!(async_result());
-        }
+        // {
+        //     move || log::info!("The async_result is: {:?}", async_result())
+        // }
 
+        <For
+            each=async_result
+            key=|sound| sound.name.clone()
+            view=move |cx, sound: Sound| {
+                view! { cx,
+                    //   <button>"Value: " {move || counter.count.get()}</button>
+                    <SoundButton sound/>
+                }
+          }
+        />
 
         //     </p>
 

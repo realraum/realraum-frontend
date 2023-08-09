@@ -71,10 +71,12 @@ pub async fn get_sounds() -> Vec<Sound> {
     parse_sounds(&txt)
 }
 
-pub async fn play_sound(url: &str) -> Result<(), String> {
+pub async fn play_sound(url: String) -> Result<(), String> {
     let url = format!("http://licht.realraum.at:8080{}", url);
     log::info!("play_sound: {}", url);
     let resp = Request::get(&url).send().await.unwrap();
+
+    // let body = reqwest_wasm::blocking::get("https://www.rust-lang.org")?.text()?;
     if resp.status() != 200 {
         return Err(resp.status_text());
     }
