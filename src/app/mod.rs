@@ -71,36 +71,18 @@ pub fn App(cx: Scope) -> impl IntoView {
                 "Click me"
             </button>
 
-        //     <p>
-        //         <code>"async_value"</code>
-        //         ": "
-        //         {async_result}
-        //         <br/>
-        //         {is_loading}
-
-        {
-            async_result().into_iter()
-            .map(|n| view! { cx,
-                {"Button goes brrr "}
-                <SoundButton sound=n/>
-                })
-            .collect_view(cx)
-        }
-
-        // {
-        //     move || log::info!("The async_result is: {:?}", async_result())
-        // }
-
-        <For
-            each=async_result
-            key=|sound| sound.name.clone()
-            view=move |cx, sound: Sound| {
-                view! { cx,
-                    //   <button>"Value: " {move || counter.count.get()}</button>
-                    <SoundButton sound/>
+            <div class="grid grid-cols-2 gap-2">
+                <For
+                    each=async_result
+                    key=|sound| sound.name.clone()
+                    view=move |cx, sound: Sound| {
+                        view! { cx,
+                            //   <button>"Value: " {move || counter.count.get()}</button>
+                            <SoundButton sound/>
+                        }
                 }
-          }
-        />
+                />
+            </div>
 
         //     </p>
 

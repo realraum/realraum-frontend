@@ -42,8 +42,8 @@ pub async fn old_get_sounds() -> String {
 }
 
 pub async fn get_sounds_strings() -> String {
-    "TEST_TXT".to_string()
-    // TEST_TXT.to_string()
+    // "TEST_TXT".to_string()
+    TEST_TXT.to_string()
 }
 
 pub async fn _get_sounds_strings() -> String {
@@ -83,7 +83,7 @@ pub async fn play_sound(url: String) -> Result<(), String> {
     Ok(())
 }
 
-// const TEST_TXT: &str = include_str!("../data/licht.realraum.at.html");
+const TEST_TXT: &str = include_str!("../data/licht.realraum.at.html");
 
 // #[cfg(test)]
 // mod test {
