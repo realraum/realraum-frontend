@@ -1,10 +1,10 @@
 use std::future::Future;
 
-use gloo_net::http::{Request, Response};
+use gloo_net::http::{Method, Request, RequestBuilder, Response};
 use lazy_static::lazy_static;
 use regex::Regex;
-use reqwest::{Client, RequestBuilder};
 use serde::{Deserialize, Serialize};
+use web_sys::{RequestCache, RequestMode};
 
 lazy_static! {
     static ref SOUND_RX: Regex = Regex::new(r#"href='([^']*)'.*?>([^<]*)"#).unwrap();
@@ -16,30 +16,30 @@ pub struct Sound {
     pub url: String,
 }
 
-pub async fn old_get_sounds() -> String {
-    log::info!("get_sounds");
-    let url: reqwest::Url = "http://licht.realraum.at:8080".parse().unwrap();
-    log::info!("url: {:?}", url);
+// pub async fn old_get_sounds() -> String {
+//     log::info!("get_sounds");
+//     let url: reqwest::Url = "http://licht.realraum.at:8080".parse().unwrap();
+//     log::info!("url: {:?}", url);
 
-    let client = Client::builder().build().unwrap();
-    let req = client
-        .request(reqwest::Method::GET, url)
-        .fetch_mode_no_cors()
-        .build()
-        .unwrap();
+//     let client = Client::builder().build().unwrap();
+//     let req = client
+//         .request(reqwest::Method::GET, url)
+//         .fetch_mode_no_cors()
+//         .build()
+//         .unwrap();
 
-    log::info!("req: {:?}", req);
+//     log::info!("req: {:?}", req);
 
-    let res = client.execute(req).await.unwrap();
+//     let res = client.execute(req).await.unwrap();
 
-    log::info!("res: {:?}", res);
+//     log::info!("res: {:?}", res);
 
-    let txt = res.text().await.unwrap();
+//     let txt = res.text().await.unwrap();
 
-    // let resp = reqwest::get(url).await.unwrap();
-    // let body = resp.text().await.unwrap();
-    txt
-}
+//     // let resp = reqwest::get(url).await.unwrap();
+//     // let body = resp.text().await.unwrap();
+//     txt
+// }
 
 pub async fn get_sounds_strings() -> String {
     // "TEST_TXT".to_string()
@@ -47,13 +47,20 @@ pub async fn get_sounds_strings() -> String {
 }
 
 pub async fn _get_sounds_strings() -> String {
-    let resp = Request::get("http://licht.realraum.at:8080")
-        .send()
-        .await
+    log::info!("get_sounds_strings");
+    let req = RequestBuilder::new("http://licht.realraum.at:8080")
+        .method(Method::GET)
+        .mode(RequestMode::NoCors)
+        .build()
         .unwrap();
-    assert_eq!(resp.status(), 200);
+    log::info!("req: {:?}", req);
 
-    String::new()
+    let resp = req.send().await.unwrap();
+    log::info!("resp: {:?}", resp);
+
+    let text = resp.text().await.unwrap();
+    log::info!("text: {:?}", text);
+    text
 }
 
 pub fn parse_sounds(txt: &str) -> Vec<Sound> {
@@ -67,19 +74,37 @@ pub fn parse_sounds(txt: &str) -> Vec<Sound> {
 }
 
 pub async fn get_sounds() -> Vec<Sound> {
-    let txt = get_sounds_strings().await;
+    let txt = _get_sounds_strings().await;
     parse_sounds(&txt)
 }
 
 pub async fn play_sound(url: String) -> Result<(), String> {
     let url = format!("http://licht.realraum.at:8080{}", url);
     log::info!("play_sound: {}", url);
-    let resp = Request::get(&url).send().await.unwrap();
+    let req = RequestBuilder::new(&url)
+        .method(Method::GET)
+        .mode(RequestMode::NoCors)
+        .cache(RequestCache::NoCache)
+        .build()
+        .unwrap();
 
-    // let body = reqwest_wasm::blocking::get("https://www.rust-lang.org")?.text()?;
-    if resp.status() != 200 {
-        return Err(resp.status_text());
-    }
+    log::info!("req: {:?}", req);
+
+    let resp = req.send().await.unwrap();
+
+    log::info!("resp: {:#?}", resp);
+
+    // if resp.status() != 200 {
+    //     log::info!("Status not OK");
+    //     log::info!("Status: {} ({})", resp.status(), resp.status_text());
+    //     log::info!("Headers: {:#?}", resp.headers());
+    //     log::info!("Body: {:#?}", resp.body());
+
+    //     return Err(resp.status_text());
+    // }
+
+    // log::info!("Status OK");
+
     Ok(())
 }
 
