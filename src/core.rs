@@ -42,8 +42,8 @@ pub struct Sound {
 // }
 
 pub async fn get_sounds_strings() -> String {
-    // "TEST_TXT".to_string()
-    TEST_TXT.to_string()
+    "TEST_TXT".to_string()
+    // TEST_TXT.to_string()
 }
 
 pub async fn _get_sounds_strings() -> String {
@@ -74,8 +74,10 @@ pub fn parse_sounds(txt: &str) -> Vec<Sound> {
 }
 
 pub async fn get_sounds() -> Vec<Sound> {
-    let txt = _get_sounds_strings().await;
-    parse_sounds(&txt)
+    let txt = get_sounds_strings().await;
+    let mut sounds = parse_sounds(&txt);
+    sort_sounds(&mut sounds);
+    sounds
 }
 
 pub async fn play_sound(url: String) -> Result<(), String> {
@@ -108,7 +110,30 @@ pub async fn play_sound(url: String) -> Result<(), String> {
     Ok(())
 }
 
-const TEST_TXT: &str = include_str!("../data/licht.realraum.at.html");
+fn sort_sounds(sounds: &mut Vec<Sound>) {
+    // // Sort alphabetically by name
+    // sounds.sort_by(|a, b| a.name.cmp(&b.name));
+
+    let mut hl_sounds = Vec::new();
+
+    // Move all sounds starting with "hl-sounds" to the end
+    //  (they are the most annoying ones)
+    //  First, remove the sounds from the list
+    //  and store them in a separate list (hl_sounds)
+    // Then, append the hl_sounds list to the end of the sounds list
+    sounds.retain(|sound| {
+        if sound.name.starts_with(HL_SOUNDS_STRING) {
+            hl_sounds.push(sound.clone());
+            false
+        } else {
+            true
+        }
+    });
+    sounds.append(&mut hl_sounds);
+}
+
+// const TEST_TXT: &str = include_str!("../data/licht.realraum.at.html");
+pub const HL_SOUNDS_STRING: &str = "hl-sounds";
 
 // #[cfg(test)]
 // mod test {
