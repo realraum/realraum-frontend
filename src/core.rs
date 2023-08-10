@@ -16,51 +16,20 @@ pub struct Sound {
     pub url: String,
 }
 
-// pub async fn old_get_sounds() -> String {
-//     log::info!("get_sounds");
-//     let url: reqwest::Url = "http://licht.realraum.at:8080".parse().unwrap();
-//     log::info!("url: {:?}", url);
-
-//     let client = Client::builder().build().unwrap();
-//     let req = client
-//         .request(reqwest::Method::GET, url)
-//         .fetch_mode_no_cors()
-//         .build()
-//         .unwrap();
-
-//     log::info!("req: {:?}", req);
-
-//     let res = client.execute(req).await.unwrap();
-
-//     log::info!("res: {:?}", res);
-
-//     let txt = res.text().await.unwrap();
-
-//     // let resp = reqwest::get(url).await.unwrap();
-//     // let body = resp.text().await.unwrap();
-//     txt
-// }
-
-pub async fn get_sounds_strings() -> String {
-    // "TEST_TXT".to_string()
-    TEST_TXT.to_string()
+pub async fn _get_sounds_strings() -> String {
+    "TEST_TXT".to_string()
+    // TEST_TXT.to_string()
 }
 
-pub async fn _get_sounds_strings() -> String {
-    log::info!("get_sounds_strings");
+pub async fn get_sounds_strings() -> Result<String, gloo_net::Error> {
     let req = RequestBuilder::new("http://licht.realraum.at:8080")
         .method(Method::GET)
-        .mode(RequestMode::NoCors)
-        .build()
-        .unwrap();
-    log::info!("req: {:?}", req);
+        .mode(RequestMode::Cors)
+        .build()?;
 
-    let resp = req.send().await.unwrap();
-    log::info!("resp: {:?}", resp);
+    let resp = req.send().await?;
 
-    let text = resp.text().await.unwrap();
-    log::info!("text: {:?}", text);
-    text
+    resp.text().await
 }
 
 pub fn parse_sounds(txt: &str) -> Vec<Sound> {
@@ -73,39 +42,22 @@ pub fn parse_sounds(txt: &str) -> Vec<Sound> {
     sounds
 }
 
-pub async fn get_sounds() -> Vec<Sound> {
-    let txt = get_sounds_strings().await;
+pub async fn get_sounds() -> Result<Vec<Sound>, gloo_net::Error> {
+    let txt = get_sounds_strings().await?;
     let mut sounds = parse_sounds(&txt);
     sort_sounds(&mut sounds);
-    sounds
+    Ok(sounds)
 }
 
-pub async fn play_sound(url: String) -> Result<(), String> {
+pub async fn play_sound(url: String) -> Result<(), gloo_net::Error> {
     let url = format!("http://licht.realraum.at:8080{}", url);
-    log::info!("play_sound: {}", url);
     let req = RequestBuilder::new(&url)
         .method(Method::GET)
-        .mode(RequestMode::NoCors)
+        .mode(RequestMode::Cors)
         .cache(RequestCache::NoCache)
-        .build()
-        .unwrap();
+        .build()?;
 
-    log::info!("req: {:?}", req);
-
-    let resp = req.send().await.unwrap();
-
-    log::info!("resp: {:#?}", resp);
-
-    // if resp.status() != 200 {
-    //     log::info!("Status not OK");
-    //     log::info!("Status: {} ({})", resp.status(), resp.status_text());
-    //     log::info!("Headers: {:#?}", resp.headers());
-    //     log::info!("Body: {:#?}", resp.body());
-
-    //     return Err(resp.status_text());
-    // }
-
-    // log::info!("Status OK");
+    let resp = req.send().await?;
 
     Ok(())
 }
@@ -117,10 +69,6 @@ fn sort_sounds(sounds: &mut Vec<Sound>) {
     let mut hl_sounds = Vec::new();
 
     // Move all sounds starting with "hl-sounds" to the end
-    //  (they are the most annoying ones)
-    //  First, remove the sounds from the list
-    //  and store them in a separate list (hl_sounds)
-    // Then, append the hl_sounds list to the end of the sounds list
     sounds.retain(|sound| {
         if sound.name.starts_with(HL_SOUNDS_STRING) {
             hl_sounds.push(sound.clone());
@@ -132,7 +80,7 @@ fn sort_sounds(sounds: &mut Vec<Sound>) {
     sounds.append(&mut hl_sounds);
 }
 
-const TEST_TXT: &str = include_str!("../data/licht.realraum.at.html");
+// const TEST_TXT: &str = include_str!("../data/licht.realraum.at.html");
 pub const HL_SOUNDS_STRING: &str = "hl-sounds";
 
 // #[cfg(test)]

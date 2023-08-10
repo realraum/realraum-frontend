@@ -32,7 +32,7 @@ pub fn App(cx: Scope) -> impl IntoView {
         // and does some async work
         |_| async move {
             log::info!("loading data...");
-            get_sounds().await
+            get_sounds().await.unwrap()
         },
     );
     // whenever the source signal changes, the loader reloads
