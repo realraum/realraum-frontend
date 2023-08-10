@@ -732,6 +732,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "gloo-console"
+version = "0.2.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "82b7ce3c05debe147233596904981848862b068862e9ec3e34be446077190d3f"
+dependencies = [
+ "gloo-utils",
+ "js-sys",
+ "serde",
+ "wasm-bindgen",
+ "web-sys",
+]
+
+[[package]]
 name = "gloo-net"
 version = "0.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1537,6 +1550,7 @@ dependencies = [
  "console_log",
  "gix-hash",
  "gix-refspec",
+ "gloo-console",
  "gloo-net 0.3.1",
  "gloo-storage",
  "lazy_static",

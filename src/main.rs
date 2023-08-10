@@ -1,6 +1,7 @@
 mod app;
-// mod components;
 mod core;
+mod license_notice;
+// mod components;
 
 use leptos::*;
 
@@ -10,11 +11,7 @@ fn main() {
     _ = console_log::init_with_level(log::Level::Debug);
     console_error_panic_hook::set_once();
 
-    log!("Realraum UI v{}", env!("CARGO_PKG_VERSION"));
-    log!(
-        "Licensed under the AGPLv3\n\
-        Copyright © 2023 Tanja-4732."
-    );
+    license_notice::log_license_notice();
 
     mount_to_body(|cx| view! { cx, <App/> })
 }
