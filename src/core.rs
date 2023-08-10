@@ -42,8 +42,8 @@ pub struct Sound {
 // }
 
 pub async fn get_sounds_strings() -> String {
-    "TEST_TXT".to_string()
-    // TEST_TXT.to_string()
+    // "TEST_TXT".to_string()
+    TEST_TXT.to_string()
 }
 
 pub async fn _get_sounds_strings() -> String {
@@ -132,7 +132,7 @@ fn sort_sounds(sounds: &mut Vec<Sound>) {
     sounds.append(&mut hl_sounds);
 }
 
-// const TEST_TXT: &str = include_str!("../data/licht.realraum.at.html");
+const TEST_TXT: &str = include_str!("../data/licht.realraum.at.html");
 pub const HL_SOUNDS_STRING: &str = "hl-sounds";
 
 // #[cfg(test)]

@@ -59,7 +59,7 @@ pub fn App(cx: Scope) -> impl IntoView {
     let is_loading = move || if loading() { "Loading..." } else { "Idle." };
 
     view! { cx,
-        <div class="h-fit min-h-screen bg-slate-600 text-white">
+        <div class="h-fit min-h-screen bg-slate-600 text-white ">
             <div id="topbar" class="sticky top-0 left-0 bg-slate-500 p-1 flex flex-row justify-end gap-2">
                 <span class="mr-auto">
                     "Realraum UI v"
@@ -79,7 +79,11 @@ pub fn App(cx: Scope) -> impl IntoView {
                 </button>
             </div>
 
-            <div class="grid grid-cols-2 gap-2">
+            <div class="
+                grid gap-2
+                grid-cols-2 sm:grid-cols-3 md:grid-cols-4
+                m-2 max-w-[1400px] min-[1416px]:mx-auto
+            ">
                 <For
                     each=async_result
                     key=|sound| sound.name.clone()
