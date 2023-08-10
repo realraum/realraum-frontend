@@ -1,6 +1,6 @@
 # Realraum UI
 
-[![github]](https://github.com/realraum/realraum-frontend)&ensp;[![crates-io]](https://crates.io/crates/realraum_ui)&ensp;[![docs-rs]](https://docs.rs/realraum_ui/latest/realraum_ui)
+[![github]](https://github.com/realraum/realraum-frontend)&ensp;[![crates-io]](https://crates.io/crates/realraum_ui)&ensp;[![docs-rs]](https://docs.rs/realraum_ui/latest)
 
 A frontend for Realraum; work in progress.
 
