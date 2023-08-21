@@ -22,7 +22,7 @@ pub async fn _get_sounds_strings() -> String {
 }
 
 pub async fn get_sounds_strings() -> Result<String, gloo_net::Error> {
-    let req = RequestBuilder::new("http://licht.realraum.at:8080")
+    let req = RequestBuilder::new("http://licht.realraum.at:4242/sounds")
         .method(Method::GET)
         .mode(RequestMode::Cors)
         .build()?;
@@ -32,7 +32,7 @@ pub async fn get_sounds_strings() -> Result<String, gloo_net::Error> {
     resp.text().await
 }
 
-pub fn parse_sounds(txt: &str) -> Vec<Sound> {
+pub fn _parse_sounds(txt: &str) -> Vec<Sound> {
     let mut sounds = Vec::new();
     for cap in SOUND_RX.captures_iter(txt) {
         let name = cap[2].to_string();
@@ -40,6 +40,28 @@ pub fn parse_sounds(txt: &str) -> Vec<Sound> {
         sounds.push(Sound { name, url });
     }
     sounds
+}
+
+#[derive(Debug, Deserialize)]
+struct ServerSound {
+    name: String,
+    path: String,
+}
+
+#[derive(Debug, Serialize)]
+struct PlaySoundPayload {
+    name: String,
+}
+
+pub fn parse_sounds(txt: &str) -> Vec<Sound> {
+    let sounds: Vec<ServerSound> = serde_json::from_str(txt).unwrap();
+    sounds
+        .into_iter()
+        .map(|sound| Sound {
+            name: sound.name,
+            url: sound.path,
+        })
+        .collect()
 }
 
 pub async fn get_sounds() -> Result<Vec<Sound>, gloo_net::Error> {
@@ -50,12 +72,12 @@ pub async fn get_sounds() -> Result<Vec<Sound>, gloo_net::Error> {
 }
 
 pub async fn play_sound(url: String) -> Result<(), gloo_net::Error> {
-    let url = format!("http://licht.realraum.at:8080{}", url);
+    let url = format!("http://licht.realraum.at:4242/play/{}", url);
     let req = RequestBuilder::new(&url)
         .method(Method::GET)
         .mode(RequestMode::Cors)
         .cache(RequestCache::NoCache)
-        .build()?;
+        .body(Json(PlaySoundPayload { name: url.clone() }))?;
 
     let resp = req.send().await?;
 

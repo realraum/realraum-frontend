@@ -34,3 +34,4 @@ web-sys = "0.3.64"
 wasm-bindgen-futures = "0.4.37"
 gloo-net = { version = "0.3.1", features = ["http"] }
 gloo-console = "0.2.3"
+serde_json = "1.0.105"
