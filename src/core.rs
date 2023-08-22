@@ -22,7 +22,7 @@ pub async fn _get_sounds_strings() -> String {
 }
 
 pub async fn get_sounds_strings() -> Result<String, gloo_net::Error> {
-    let req = RequestBuilder::new("http://licht.realraum.at:4242/sounds")
+    let req = RequestBuilder::new("http://licht.realraum.at:4242/api/v1/sounds")
         .method(Method::GET)
         .mode(RequestMode::Cors)
         .build()?;
@@ -72,14 +72,12 @@ pub async fn get_sounds() -> Result<Vec<Sound>, gloo_net::Error> {
 }
 
 pub async fn play_sound(url: String) -> Result<(), gloo_net::Error> {
-    let url = format!("http://licht.realraum.at:4242/play/{}", url);
+    let url = format!("http://licht.realraum.at:4242/api/v1/play/{}", url);
     let req = RequestBuilder::new(&url)
         .method(Method::GET)
         .mode(RequestMode::Cors)
         .cache(RequestCache::NoCache)
-        .body(serde_json::to_string(&PlaySoundPayload {
-            name: url.clone(),
-        })?)?;
+        .build()?;
 
     let resp = req.send().await?;
 
