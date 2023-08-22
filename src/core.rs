@@ -77,7 +77,9 @@ pub async fn play_sound(url: String) -> Result<(), gloo_net::Error> {
         .method(Method::GET)
         .mode(RequestMode::Cors)
         .cache(RequestCache::NoCache)
-        .body(Json(PlaySoundPayload { name: url.clone() }))?;
+        .body(serde_json::to_string(&PlaySoundPayload {
+            name: url.clone(),
+        })?)?;
 
     let resp = req.send().await?;
 
