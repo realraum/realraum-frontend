@@ -79,7 +79,19 @@ pub async fn play_sound(url: String) -> Result<(), gloo_net::Error> {
         .cache(RequestCache::NoCache)
         .build()?;
 
-    let resp = req.send().await?;
+    req.send().await?;
+
+    Ok(())
+}
+
+pub async fn kill_mplayer() -> Result<(), gloo_net::Error> {
+    let url = format!("http://licht.realraum.at:4242/api/v1/killall_mplayer");
+    let req = RequestBuilder::new(&url)
+        .method(Method::GET)
+        .cache(RequestCache::NoCache)
+        .build()?;
+
+    req.send().await?;
 
     Ok(())
 }

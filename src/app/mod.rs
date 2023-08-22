@@ -4,7 +4,9 @@ use leptos::{ev::close, *};
 use leptos_router::*;
 
 use crate::app::sound_button::SoundButton;
-use crate::core::{get_sounds, get_sounds_strings, parse_sounds, Sound, HL_SOUNDS_STRING};
+use crate::core::{
+    get_sounds, get_sounds_strings, kill_mplayer, parse_sounds, Sound, HL_SOUNDS_STRING,
+};
 
 async fn load_data() -> i32 {
     42
@@ -53,6 +55,8 @@ pub fn App(cx: Scope) -> impl IntoView {
         sounds
     };
 
+    let kill_action = create_action(cx, |_: &()| async move { kill_mplayer().await.unwrap() });
+
     // the resource's loading() method gives us a
     // signal to indicate whether it's currently loading
     let loading = async_data.loading();
@@ -72,10 +76,15 @@ pub fn App(cx: Scope) -> impl IntoView {
                     "Reload data"
                 </button>
 
+                // <button on:click=move |_| {
+                //     set_show_hl_sounds.update(|n| *n = !*n);
+                // }>
+                //     "Toggle hl-sounds"
+                // </button>
                 <button on:click=move |_| {
-                    set_show_hl_sounds.update(|n| *n = !*n);
+                    kill_action.dispatch(());
                 }>
-                    "Toggle hl-sounds"
+                    "Kill mplayer"
                 </button>
             </div>
 
