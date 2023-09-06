@@ -41,7 +41,30 @@ pub fn App(cx: Scope) -> impl IntoView {
                 </button>
             </div>
 
-            <Sounds />
+            // <Sounds />
+
+            <Router>
+                <main id="router-outlet">
+                    <Routes>
+                        // <Route path="/welcome" view=Welcome/>
+                        // <Route path="/collaboration" view=Collaboration/>
+                        // <Route path="/settings" view=Settings/>
+                        <Route path="/" view=Sounds/>
+                        // <Route
+                        //     path="/*any"
+                        //     view=|cx| {
+                        //         view! { cx, <p>{"I'm a catch-all page"}</p> }
+                        //     }
+                        // />
+                        // <Route
+                        //     path="/"
+                        //     view=|cx| {
+                        //         view! { cx, <a href="welcome">{"Go to the welcome page"}</a> }
+                        //     }
+                        // />
+                    </Routes>
+                </main>
+            </Router>
 
             // <p>
             //     { if !show_hl_sounds() {
