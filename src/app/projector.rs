@@ -9,10 +9,6 @@ use crate::{
 
 #[component]
 pub fn Projector(cx: Scope) -> impl IntoView {
-    log!("Projector");
-
-    log!("{}", projector_commands::power::on);
-
     view! { cx,
         // <For
         //     each=async_result
@@ -60,9 +56,9 @@ pub fn Projector(cx: Scope) -> impl IntoView {
         <UrlButton url=projector_commands::picture::freeze>
             "Freeze"
         </UrlButton> " "
-        <UrlButton url=projector_commands::picture::un_freeze>
-            "Unfreeze"
-        </UrlButton> " "
+        // <UrlButton url=projector_commands::picture::un_freeze>
+        //     "Unfreeze"
+        // </UrlButton> " "
         <UrlButton url=projector_commands::picture::contrast_up>
             "Contrast up"
         </UrlButton> " "
