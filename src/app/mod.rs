@@ -1,6 +1,7 @@
 mod projector;
 mod sound_button;
 mod sounds;
+mod url_button;
 
 use leptos::{ev::close, *};
 use leptos_router::*;

@@ -2,9 +2,9 @@ use leptos::*;
 use leptos_router::*;
 
 use crate::{
-    app::sound_button::SoundButton,
+    app::url_button::UrlButton,
     core::{get_sounds, Sound, HL_SOUNDS_STRING},
-    projector_commands,
+    projector_commands::{self, menu},
 };
 
 #[component]
@@ -29,6 +29,17 @@ pub fn Projector(cx: Scope) -> impl IntoView {
         //         }
         //     }
         // />
+
+        <UrlButton url=projector_commands::power::on>
+            "Power on"
+        </UrlButton> " "
+        <UrlButton url=projector_commands::power::off>
+            "Power off"
+        </UrlButton>
+        <br/>
+        <UrlButton url=projector_commands::menu::menu_button>
+            "Menu"
+        </UrlButton>
     </div>
     }
 }
