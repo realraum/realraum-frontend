@@ -1,3 +1,4 @@
+mod projector;
 mod sound_button;
 mod sounds;
 
@@ -5,7 +6,7 @@ use leptos::{ev::close, *};
 use leptos_router::*;
 
 use crate::app::sound_button::SoundButton;
-use crate::app::sounds::Sounds;
+use crate::app::{projector::Projector, sounds::Sounds};
 use crate::core::{
     get_sounds, get_sounds_strings, kill_mplayer, parse_sounds, Sound, HL_SOUNDS_STRING,
 };
@@ -41,8 +42,6 @@ pub fn App(cx: Scope) -> impl IntoView {
                 </button>
             </div>
 
-            // <Sounds />
-
             <Router>
                 <main id="router-outlet">
                     <Routes>
@@ -50,6 +49,7 @@ pub fn App(cx: Scope) -> impl IntoView {
                         // <Route path="/collaboration" view=Collaboration/>
                         // <Route path="/settings" view=Settings/>
                         <Route path="/sounds" view=Sounds/>
+                        <Route path="/projector" view=Projector/>
                         <Route
                             path="/*any"
                             view=|cx| {

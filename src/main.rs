@@ -1,6 +1,7 @@
 mod app;
 mod core;
 mod license_notice;
+mod projector_commands;
 // mod components;
 
 use leptos::*;
