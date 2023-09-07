@@ -23,10 +23,9 @@ pub fn Projector(cx: Scope) -> impl IntoView {
 
         <div class="
             grid gap-2
-            grid-cols-2 sm:grid-cols-3 md:grid-cols-4
+            grid-cols-2 sm:grid-cols-2
             m-2 max-w-[1400px] min-[1416px]:mx-auto
         ">
-
         <UrlButton url=projector_commands::volume::up>
             "Volume up"
         </UrlButton> " "
@@ -39,14 +38,15 @@ pub fn Projector(cx: Scope) -> impl IntoView {
         <UrlButton url=projector_commands::volume::un_mute>
             "Unmute"
         </UrlButton>
-
         </div>
+
+        <br/>
+
         <div class="
             grid gap-2
-            grid-cols-2 sm:grid-cols-3 md:grid-cols-4
+            grid-cols-3
             m-2 max-w-[1400px] min-[1416px]:mx-auto
         ">
-
         <UrlButton url=projector_commands::picture::blank>
             "Blank"
         </UrlButton> " "
@@ -54,11 +54,20 @@ pub fn Projector(cx: Scope) -> impl IntoView {
             "Unblank"
         </UrlButton> " "
         <UrlButton url=projector_commands::picture::freeze>
-            "Freeze"
+            "(Un)freeze"
         </UrlButton> " "
         // <UrlButton url=projector_commands::picture::un_freeze>
         //     "Unfreeze"
         // </UrlButton> " "
+        </div>
+
+        <br/>
+
+        <div class="
+            grid gap-2
+            grid-cols-2
+            m-2 max-w-[1400px] min-[1416px]:mx-auto
+        ">
         <UrlButton url=projector_commands::picture::contrast_up>
             "Contrast up"
         </UrlButton> " "
@@ -71,31 +80,36 @@ pub fn Projector(cx: Scope) -> impl IntoView {
         <UrlButton url=projector_commands::picture::brightness_down>
             "Brightness down"
         </UrlButton>
-
         </div>
+
+        <br/>
+
         <div class="
             grid gap-2
-            grid-cols-2 sm:grid-cols-3 md:grid-cols-4
+            grid-cols-2
             m-2 max-w-[1400px] min-[1416px]:mx-auto
         ">
-
         <UrlButton url=projector_commands::power::on>
             "Power on"
         </UrlButton> " "
         <UrlButton url=projector_commands::power::off>
             "Power off"
         </UrlButton>
+        </div>
 
-         </div>
+        <br/>
+
         <div class="
             grid gap-2
-            grid-cols-2 sm:grid-cols-3 md:grid-cols-4
+            grid-cols-2 sm:grid-cols-3
             m-2 max-w-[1400px] min-[1416px]:mx-auto
         ">
-
         <UrlButton url=projector_commands::menu::menu_button>
             "Menu button"
         </UrlButton> " "
+        <UrlButton url=projector_commands::menu::ok>
+            "Menu ok"
+        </UrlButton>" "
         <UrlButton url=projector_commands::menu::up>
             "Menu up"
         </UrlButton> " "
@@ -107,18 +121,16 @@ pub fn Projector(cx: Scope) -> impl IntoView {
         </UrlButton> " "
         <UrlButton url=projector_commands::menu::right>
             "Menu right"
-        </UrlButton> " "
-        <UrlButton url=projector_commands::menu::ok>
-            "Menu ok"
         </UrlButton>
-
         </div>
+
+        <br/>
+
         <div class="
             grid gap-2
-            grid-cols-2 sm:grid-cols-3 md:grid-cols-4
+            grid-cols-2 md:grid-cols-4
             m-2 max-w-[1400px] min-[1416px]:mx-auto
         ">
-
         <UrlButton url=projector_commands::input::vga_a>
             "VGA A"
         </UrlButton> " "
@@ -143,9 +155,6 @@ pub fn Projector(cx: Scope) -> impl IntoView {
         <UrlButton url=projector_commands::input::usb_viewer>
             "USB Viewer"
         </UrlButton>
-
         </div>
-
-
     }
 }
