@@ -19,7 +19,7 @@ pub fn Sounds(cx: Scope) -> impl IntoView {
     let async_data = create_resource(
         cx,
         // the first is the "source signal"
-        count,
+        move || count.get(),
         // the second is the loader
         // it takes the source signal's value as its argument
         // and does some async work
@@ -39,7 +39,7 @@ pub fn Sounds(cx: Scope) -> impl IntoView {
             // This loading state will only show before the first load
             .unwrap_or_else(|| vec![test_sound.clone()]);
 
-        if !show_hl_sounds() {
+        if !show_hl_sounds.get() {
             sounds.retain(|sound| !sound.name.starts_with(HL_SOUNDS_STRING));
         }
 
@@ -49,7 +49,7 @@ pub fn Sounds(cx: Scope) -> impl IntoView {
     // the resource's loading() method gives us a
     // signal to indicate whether it's currently loading
     let loading = async_data.loading();
-    let is_loading = move || if loading() { "Loading..." } else { "Idle." };
+    let is_loading = move || if loading.get() { "Loading..." } else { "Idle." };
 
     view! { cx,
         <div class="

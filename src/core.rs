@@ -2,12 +2,12 @@ use std::future::Future;
 
 use gloo_net::http::{Method, Request, RequestBuilder, Response};
 use lazy_static::lazy_static;
-use regex::Regex;
+// use regex::Regex;
 use serde::{Deserialize, Serialize};
 use web_sys::{RequestCache, RequestMode};
 
 lazy_static! {
-    static ref SOUND_RX: Regex = Regex::new(r#"href='([^']*)'.*?>([^<]*)"#).unwrap();
+    // // static ref SOUND_RX: Regex = Regex::new(r#"href='([^']*)'.*?>([^<]*)"#).unwrap();
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -32,15 +32,15 @@ pub async fn get_sounds_strings() -> Result<String, gloo_net::Error> {
     resp.text().await
 }
 
-pub fn _parse_sounds(txt: &str) -> Vec<Sound> {
-    let mut sounds = Vec::new();
-    for cap in SOUND_RX.captures_iter(txt) {
-        let name = cap[2].to_string();
-        let url = cap[1].to_string();
-        sounds.push(Sound { name, url });
-    }
-    sounds
-}
+// pub fn _parse_sounds(txt: &str) -> Vec<Sound> {
+//     let mut sounds = Vec::new();
+//     for cap in SOUND_RX.captures_iter(txt) {
+//         let name = cap[2].to_string();
+//         let url = cap[1].to_string();
+//         sounds.push(Sound { name, url });
+//     }
+//     sounds
+// }
 
 #[derive(Debug, Deserialize)]
 struct ServerSound {
