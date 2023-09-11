@@ -1,25 +1,27 @@
 use leptos::*;
-use leptos_router::*;
 
 use crate::{
     app::url_button::UrlButton,
-    core::{get_sounds, Sound, HL_SOUNDS_STRING},
-    projector_commands::{self, menu},
+    projector_commands::{self},
 };
 
 #[component]
 pub fn Projector(cx: Scope) -> impl IntoView {
     view! { cx,
-        // <For
-        //     each=async_result
-        //     key=|sound| sound.name.clone()
-        //     view=move |cx, sound: Sound| {
-        //         view! { cx,
-        //             //   <button>"Value: " {move || counter.count.get()}</button>
-        //             <SoundButton sound/>
-        //         }
-        //     }
-        // />
+        <div class="
+            grid gap-2
+            grid-cols-2
+            m-2 max-w-[1400px] min-[1416px]:mx-auto
+        ">
+        <UrlButton url=projector_commands::power::on>
+            "Power on"
+        </UrlButton> " "
+        <UrlButton url=projector_commands::power::off>
+            "Power off"
+        </UrlButton>
+        </div>
+
+        <br/>
 
         <div class="
             grid gap-2
@@ -71,29 +73,14 @@ pub fn Projector(cx: Scope) -> impl IntoView {
         <UrlButton url=projector_commands::picture::contrast_up>
             "Contrast up"
         </UrlButton> " "
-        <UrlButton url=projector_commands::picture::contrast_down>
-            "Contrast down"
-        </UrlButton> " "
         <UrlButton url=projector_commands::picture::brightness_up>
             "Brightness up"
         </UrlButton> " "
+        <UrlButton url=projector_commands::picture::contrast_down>
+            "Contrast down"
+        </UrlButton> " "
         <UrlButton url=projector_commands::picture::brightness_down>
             "Brightness down"
-        </UrlButton>
-        </div>
-
-        <br/>
-
-        <div class="
-            grid gap-2
-            grid-cols-2
-            m-2 max-w-[1400px] min-[1416px]:mx-auto
-        ">
-        <UrlButton url=projector_commands::power::on>
-            "Power on"
-        </UrlButton> " "
-        <UrlButton url=projector_commands::power::off>
-            "Power off"
         </UrlButton>
         </div>
 
@@ -107,17 +94,17 @@ pub fn Projector(cx: Scope) -> impl IntoView {
         <UrlButton url=projector_commands::menu::menu_button>
             "Menu button"
         </UrlButton> " "
+        <UrlButton url=projector_commands::menu::up>
+        "Menu up"
+        </UrlButton> " "
         <UrlButton url=projector_commands::menu::ok>
             "Menu ok"
         </UrlButton>" "
-        <UrlButton url=projector_commands::menu::up>
-            "Menu up"
+        <UrlButton url=projector_commands::menu::left>
+            "Menu left"
         </UrlButton> " "
         <UrlButton url=projector_commands::menu::down>
             "Menu down"
-        </UrlButton> " "
-        <UrlButton url=projector_commands::menu::left>
-            "Menu left"
         </UrlButton> " "
         <UrlButton url=projector_commands::menu::right>
             "Menu right"
@@ -155,6 +142,19 @@ pub fn Projector(cx: Scope) -> impl IntoView {
         <UrlButton url=projector_commands::input::usb_viewer>
             "USB Viewer"
         </UrlButton>
+        </div>
+
+        <br/>
+
+        <div class="
+            m-auto
+            flex flex-col justify-center items-center
+        ">
+        <p>
+            "Powered by full-stack "
+            <a class="text-blue-500" href="https://www.rust-lang.org/">"Rust 🦀"</a>
+            " without any JavaScript."
+        </p>
         </div>
     }
 }

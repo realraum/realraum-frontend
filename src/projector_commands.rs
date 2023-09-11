@@ -36,6 +36,7 @@ pub mod menu {
     make_api_urls!(menu_button, up, down, left, right, ok; menu);
 }
 
+#[allow(dead_code)]
 pub mod picture {
     make_api_urls!(
         blank,
