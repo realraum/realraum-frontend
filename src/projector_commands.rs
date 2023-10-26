@@ -4,7 +4,7 @@ macro_rules! make_api_urls {
         // Match the list of identifiers and the module name and assign them to $name and $module
         ($($name:ident),*; $module:ident) => {
             // For each identifier in the list, expand to a constant declaration
-            $(pub const $name: &str = concat!("http://licht.realraum.at:4201/api/v1/", stringify!($module), "/", stringify!($name));)*
+            $(pub const $name: &str = concat!("http://projector.realraum.at/api/v1/", stringify!($module), "/", stringify!($name));)*
         };
     }
 
