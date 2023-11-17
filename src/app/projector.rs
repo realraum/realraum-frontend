@@ -153,7 +153,7 @@ pub fn Projector(cx: Scope) -> impl IntoView {
         <p>
             "Powered by full-stack "
             <a class="text-blue-500" href="https://www.rust-lang.org/">"Rust 🦀"</a>
-            " without any JavaScript."
+            <s>" without any JavaScript."</s> with javascript for loading
         </p>
         </div>
     }
