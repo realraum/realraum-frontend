@@ -14,6 +14,7 @@ lazy_static! {
 pub struct Sound {
     pub name: String,
     pub url: String,
+    pub play_count: i64,
 }
 
 pub async fn _get_sounds_strings() -> String {
@@ -22,7 +23,7 @@ pub async fn _get_sounds_strings() -> String {
 }
 
 pub async fn get_sounds_strings() -> Result<String, gloo_net::Error> {
-    let req = RequestBuilder::new("http://licht.realraum.at:4242/api/v1/sounds")
+    let req = RequestBuilder::new("http://127.0.0.1:4242/api/v1/sounds")
         .method(Method::GET)
         .mode(RequestMode::Cors)
         .build()?;
@@ -46,6 +47,7 @@ pub async fn get_sounds_strings() -> Result<String, gloo_net::Error> {
 struct ServerSound {
     name: String,
     path: String,
+    play_count: i64,
 }
 
 #[derive(Debug, Serialize)]
@@ -60,6 +62,7 @@ pub fn parse_sounds(txt: &str) -> Vec<Sound> {
         .map(|sound| Sound {
             name: sound.name,
             url: sound.path,
+            play_count: sound.play_count,
         })
         .collect()
 }
@@ -97,8 +100,11 @@ pub async fn kill_mplayer() -> Result<(), gloo_net::Error> {
 }
 
 fn sort_sounds(sounds: &mut Vec<Sound>) {
-    // // Sort alphabetically by name
-    // sounds.sort_by(|a, b| a.name.cmp(&b.name));
+    // Sort alphabetically by name
+    sounds.sort_by(|a, b| a.name.cmp(&b.name));
+
+    // Sort by play count
+    sounds.sort_by(|a, b| b.play_count.cmp(&a.play_count));
 
     let mut hl_sounds = Vec::new();
 
@@ -111,10 +117,11 @@ fn sort_sounds(sounds: &mut Vec<Sound>) {
             true
         }
     });
+
     sounds.append(&mut hl_sounds);
 }
 
-// const TEST_TXT: &str = include_str!("../data/licht.realraum.at.html");
+// const TEST_TXT: &str = include_str!("../data/127.0.0.1.html");
 pub const HL_SOUNDS_STRING: &str = "hl-sounds";
 
 // #[cfg(test)]

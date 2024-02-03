@@ -9,8 +9,9 @@ use crate::{
 #[component]
 pub fn Sounds(cx: Scope) -> impl IntoView {
     let test_sound = Sound {
-        name: "test_sound".to_string(),
+        name: "Loading...".to_string(),
         url: "/test_sound.ogg".to_string(),
+        play_count: -420,
     };
     let (count, set_count) = create_signal(cx, 0);
     let (show_hl_sounds, set_show_hl_sounds) = create_signal(cx, false);
