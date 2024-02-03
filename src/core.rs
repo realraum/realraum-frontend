@@ -23,7 +23,7 @@ pub async fn _get_sounds_strings() -> String {
 }
 
 pub async fn get_sounds_strings() -> Result<String, gloo_net::Error> {
-    let req = RequestBuilder::new("http://127.0.0.1:4242/api/v1/sounds")
+    let req = RequestBuilder::new("http://licht.realraum.at:4242/api/v1/sounds")
         .method(Method::GET)
         .mode(RequestMode::Cors)
         .build()?;
