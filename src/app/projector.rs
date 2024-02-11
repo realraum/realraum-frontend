@@ -6,8 +6,8 @@ use crate::{
 };
 
 #[component]
-pub fn Projector(cx: Scope) -> impl IntoView {
-    view! { cx,
+pub fn Projector() -> impl IntoView {
+    view! {
         <div class="
             grid gap-2
             grid-cols-2

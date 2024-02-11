@@ -3,26 +3,17 @@ mod sound_button;
 mod sounds;
 mod url_button;
 
-use leptos::{ev::close, *};
+use leptos::*;
 use leptos_router::*;
 
-use crate::app::sound_button::SoundButton;
 use crate::app::{projector::Projector, sounds::Sounds};
-use crate::core::{
-    get_sounds, get_sounds_strings, kill_mplayer, parse_sounds, Sound, HL_SOUNDS_STRING,
-};
-
-async fn load_data() -> i32 {
-    42
-}
+use crate::core::kill_mplayer;
 
 #[component]
-pub fn App(cx: Scope) -> impl IntoView {
-    let version_info = env!("CARGO_PKG_VERSION");
+pub fn App() -> impl IntoView {
+    let kill_action = create_action(|_: &()| async move { kill_mplayer().await.unwrap() });
 
-    let kill_action = create_action(cx, |_: &()| async move { kill_mplayer().await.unwrap() });
-
-    view! { cx,
+    view! {
         <div class="h-fit min-h-screen bg-slate-600 text-white ">
             <div id="topbar" class="sticky top-0 left-0 bg-slate-500 p-1 flex flex-row justify-end gap-2">
                 <span class="mr-auto">
@@ -55,8 +46,8 @@ pub fn App(cx: Scope) -> impl IntoView {
                         <Route path="/projector" view=Projector/>
                         <Route
                             path="/*any"
-                            view=|cx| {
-                                view! { cx,
+                            view= || {
+                                view! {
                                     <p class="text-lg p-3">
                                         "Visit "
                                         <a class="text-blue-500" href="/sounds">"/sounds"</a>
@@ -70,7 +61,7 @@ pub fn App(cx: Scope) -> impl IntoView {
                         // <Route
                         //     path="/"
                         //     view=|cx| {
-                        //         view! { cx, <a href="welcome">{"Go to the welcome page"}</a> }
+                        //         view! {   <a href="welcome">{"Go to the welcome page"}</a> }
                         //     }
                         // />
                     </Routes>

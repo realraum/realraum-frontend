@@ -1,13 +1,15 @@
-use std::future::Future;
-
-use gloo_net::http::{Method, Request, RequestBuilder, Response};
+use gloo_net::http::{Method, RequestBuilder};
 use lazy_static::lazy_static;
+use leptos::window;
 // use regex::Regex;
 use serde::{Deserialize, Serialize};
 use web_sys::{RequestCache, RequestMode};
 
 lazy_static! {
     // // static ref SOUND_RX: Regex = Regex::new(r#"href='([^']*)'.*?>([^<]*)"#).unwrap();
+    static ref BASE_URL: String = window().origin();
+    static ref SOUNDS_API_PATH: String = format!("{}/api/v1/sounds", BASE_URL.as_str());
+    static ref KILLALL_URL: String = format!("{}/api/v1/killall_mplayer", BASE_URL.as_str());
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -23,7 +25,7 @@ pub async fn _get_sounds_strings() -> String {
 }
 
 pub async fn get_sounds_strings() -> Result<String, gloo_net::Error> {
-    let req = RequestBuilder::new("http://licht.realraum.at:4242/api/v1/sounds")
+    let req = RequestBuilder::new(&SOUNDS_API_PATH)
         .method(Method::GET)
         .mode(RequestMode::Cors)
         .build()?;
@@ -75,7 +77,7 @@ pub async fn get_sounds() -> Result<Vec<Sound>, gloo_net::Error> {
 }
 
 pub async fn play_sound(url: String) -> Result<(), gloo_net::Error> {
-    let url = format!("http://licht.realraum.at:4242/api/v1/play/{}", url);
+    let url = format!("{}/api/v1/play/{}", BASE_URL.as_str(), url);
     let req = RequestBuilder::new(&url)
         .method(Method::GET)
         .mode(RequestMode::Cors)
@@ -88,8 +90,7 @@ pub async fn play_sound(url: String) -> Result<(), gloo_net::Error> {
 }
 
 pub async fn kill_mplayer() -> Result<(), gloo_net::Error> {
-    let url = format!("http://licht.realraum.at:4242/api/v1/killall_mplayer");
-    let req = RequestBuilder::new(&url)
+    let req = RequestBuilder::new(&(&KILLALL_URL))
         .method(Method::GET)
         .cache(RequestCache::NoCache)
         .build()?;
